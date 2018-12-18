@@ -1,0 +1,17 @@
+{
+  "name": "Chesapeake",
+  "version": "1.0.0",
+  "description": "Datadog utilities",
+  "main": "chesapeake.js",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Schoenfeld",
+  "license": "ISC"
+}
