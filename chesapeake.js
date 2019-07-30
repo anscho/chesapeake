@@ -16,41 +16,6 @@ if (missing && missing.length) {
   console.log(`Missing environment variables ${missing.join(', ')}`)
 }
 
-// Tag
-
-const tag_query = datadog.make_query('tag')
-
-const find_command = async text => {
-  try {
-    const monitors = await datadog.search_monitors(tag_query(text))
-    const output = monitors.map(monitor => ({
-      id: monitor.id,
-      name: monitor.name
-    })).filter((monitor, index, self) => {
-      return self.findIndex(x => x.id === monitor.id) === index
-    })
-    console.log(JSON.stringify(output, null, 2))
-  } catch (err) {
-    console.error(err.statusCode || err)
-  }
-}
-
-const replace_command = async (text, replacement_text, command) => {
-  const {
-    monitorIds: monitor_ids
-  } = command
-
-  try {
-    const ids = monitor_ids
-      ? monitor_ids.split(',')
-      : (await datadog.search_monitors(tag_query(text))).map(m => m.id)
-    await Promise.all(ids.map(id => update_monitor(id, text, replacement_text)))
-    console.log('Done!')
-  } catch (err) {
-    console.error(err.statusCode || err)
-  }
-}
-
 // CLI
 
 const argv = minimist(process.argv.slice(2))
