@@ -1,5 +1,9 @@
 // CLI for finding and updating Datadog monitors by tag
 'use strict'
+const _ = require('lodash')
+const fs = require('fs')
+const { promisify } = require('util')
+
 const cli_utils = require('../cli-utils')
 const datadog = require('../datadog')
 
@@ -33,12 +37,10 @@ const find_command = async argv => {
 
   try {
     const monitors = await datadog.search_monitors(tag_query(tag))
-    const output = monitors.map(monitor => ({
+    const output = _.uniqBy(monitors.map(monitor => ({
       id: monitor.id,
       name: monitor.name
-    })).filter((monitor, index, self) => {
-      return self.findIndex(x => x.id === monitor.id) === index
-    })
+    })), monitor => monitor.id)
     console.log(JSON.stringify(output))
   } catch (err) {
     console.error(err.statusCode || err)
@@ -159,6 +161,48 @@ const remove_command = async argv => {
   }
 }
 
+// Export
+
+const export_name = 'export'
+const export_description = 'Finds all monitors associated with a tag and writes them to disk'
+
+const export_help = () => {
+  console.log(`Usage: ${export_name} <tag> <output_directory>
+
+  ${export_description}`)
+}
+
+const export_command = async argv => {
+  if (cli_utils.is_help(argv)) {
+    export_help()
+    process.exit()
+  }
+
+  const tag = argv._[0]
+  const path = argv._[1]
+
+  fs.mkdirSync(path, { recursive: true })
+
+  try {
+    const ids = _.uniq(
+      (
+        await datadog.search_monitors(tag_query(tag))
+      ).map(monitor => monitor.id)
+    )
+    //
+    await Promise.all(ids.map(async id => {
+      const monitor = JSON.parse(await datadog.get_monitor(id))
+      fs.writeFileSync(
+        `${path}/${monitor.id}.json`,
+        JSON.stringify(monitor, null, 2)
+      )
+    }))
+    console.log(`Wrote ${ids.length} monitors to ${path}`)
+  } catch (err) {
+    console.error(err.statusCode || err)
+  }
+}
+
 // CLI
 
 module.exports = new cli_utils.NestedCommand({
@@ -182,6 +226,12 @@ module.exports = new cli_utils.NestedCommand({
       description: remove_description,
       help: remove_help,
       run: remove_command
+    },
+    {
+      name: export_name,
+      description: export_description,
+      help: export_help,
+      run: export_command
     }
   ]
 })

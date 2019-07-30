@@ -10,10 +10,7 @@ const message_query = datadog.make_query('message')
 const update_monitor = async (id, text, replacement_text) => {
   let monitor = JSON.parse(await datadog.get_monitor(id))
 
-  // If it already notifies the new channel, don't add a duplicate
-  const new_exists = monitor.message.includes(replacement_text)
-  monitor.message = monitor.message.replace(text,
-    new_exists ? '' : replacement_text)
+  monitor.message = monitor.message.replace(text, replacement_text)
 
   const response = await datadog.put_monitor(id, monitor)
 
@@ -21,10 +18,7 @@ const update_monitor = async (id, text, replacement_text) => {
   const success = verification_response.message.includes(replacement_text)
 
   if (success) {
-    const message = new_exists
-      ? `removed ${text}, ${replacement_text} exists`
-      : `${text} -> ${replacement_text}`
-    console.log(`Updated ${id}: ${message}`)
+    console.log(`Updated ${id}: ${text} -> ${replacement_text}`)
   } else {
     console.log(`Failure on ${id}: ${verification_response.message}`)
   }

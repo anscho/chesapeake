@@ -4,6 +4,7 @@
   "description": "Datadog utilities",
   "main": "chesapeake.js",
   "dependencies": {
+    "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
