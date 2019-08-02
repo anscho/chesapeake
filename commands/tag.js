@@ -43,7 +43,9 @@ const find_command = async argv => {
     })), monitor => monitor.id)
     console.log(JSON.stringify(output))
   } catch (err) {
-    console.error(err.statusCode || err)
+    console.error(err.statusCode
+      ? `${err.statusCode} ${err.message}`
+      : err)
   }
 }
 
@@ -100,7 +102,9 @@ const add_command = async argv => {
     await Promise.all(monitor_ids.map(add_tag(tag)))
     console.log('Done!')
   } catch (err) {
-    console.error(err.statusCode || err)
+    console.error(err.statusCode
+      ? `${err.statusCode} ${err.message}`
+      : err)
   }
 }
 
@@ -157,7 +161,9 @@ const remove_command = async argv => {
     await Promise.all(monitor_ids.map(remove_tag(tag)))
     console.log('Done!')
   } catch (err) {
-    console.error(err.statusCode || err)
+    console.error(err.statusCode
+      ? `${err.statusCode} ${err.message}`
+      : err)
   }
 }
 
@@ -181,14 +187,22 @@ const export_command = async argv => {
   const tag = argv._[0]
   const path = argv._[1]
 
-  fs.mkdirSync(path, { recursive: true })
+  try {
+    fs.mkdirSync(path, { recursive: true })
+  } catch (error) {
+    if (error.code !== 'EEXIST') {
+      console.error(error)
+    }
+  }
 
   try {
-    const ids = _.uniq(
-      (
-        await datadog.search_monitors(tag_query(tag))
-      ).map(monitor => monitor.id)
-    )
+    const all = await datadog.search_monitors(tag_query(tag))
+    const ids = _.uniq(all.map(monitor => monitor.id))
+    const missing = all.length - ids.length
+    if (missing) {
+      console.log(`Missing ${missing} ids`)
+    }
+
     //
     await Promise.all(ids.map(async id => {
       const monitor = JSON.parse(await datadog.get_monitor(id))
@@ -199,7 +213,9 @@ const export_command = async argv => {
     }))
     console.log(`Wrote ${ids.length} monitors to ${path}`)
   } catch (err) {
-    console.error(err.statusCode || err)
+    console.error(err.statusCode
+      ? `${err.statusCode} ${err.message}`
+      : err)
   }
 }
 

@@ -34,7 +34,7 @@ const put_monitor = async (id, json) => {
 }
 
 const search_monitors_page = async (query, page, per_page) => {
-  const search_url = `${monitor}/search?${credentials}&query=${query}&page=${page}&per_page=${per_page}`
+  const search_url = `${monitor}/search?${credentials}&query=${query}&page=${page}&per_page=${per_page}&sort=name,asc`
   const response = await request(search_url)
   return JSON.parse(response)
 }
@@ -42,7 +42,7 @@ const search_monitors_page = async (query, page, per_page) => {
 // Response may contain duplicates
 const search_monitors = async (query) => {
   let page = 0
-  const per_page = 10
+  const per_page = 100 // Max
   let total_count = 0
   let monitors = []
 
