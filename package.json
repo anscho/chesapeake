@@ -1,7 +1,7 @@
 {
   "name": "chesapeake",
   "version": "1.0.0",
-  "description": "Datadog utility CLI",
+  "description": "CLI for managing and automating Datadog configuration",
   "main": "chesapeake.js",
   "dependencies": {
     "lodash": "^4.17.15",
@@ -20,5 +20,6 @@
   "keywords": [
     "Datadog",
     "CLI"
-  ]
+  ],
+  "bin": "chesapeake"
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict'
 const minimist = require('minimist')
 const cli_utils = require('./cli-utils')
@@ -22,7 +24,7 @@ const argv = minimist(process.argv.slice(2))
 
 const command = new cli_utils.NestedCommand({
   name: 'chesapeake',
-  description: 'Automates finding and updating monitors',
+  description: 'CLI for managing and automating Datadog configuration',
   commands: [
     get_command,
     message_command,
