@@ -1,11 +1,12 @@
 {
   "name": "Chesapeake",
   "version": "1.0.0",
-  "description": "Datadog utilities",
+  "description": "Datadog utility CLI",
   "main": "chesapeake.js",
   "dependencies": {
     "lodash": "^4.17.15",
     "minimist": "^1.2.0",
+    "mit-license": "^1.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   },
@@ -14,5 +15,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrew Schoenfeld",
-  "license": "ISC"
+  "license": "MIT",
+  "keywords": [
+    "Datadog",
+    "CLI"
+  ]
 }
