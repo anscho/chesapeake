@@ -12,17 +12,24 @@ const {
 // https://docs.datadoghq.com/api/?lang=bash#monitors-search
 
 const base = 'https://api.datadoghq.com/api/v1'
+const dashboard = `${base}/dashboard`
+const dashboard_list = `${base}/dashboard/lists/manual`
 const monitor = `${base}/monitor`
 const credentials = `application_key=${app_key}&api_key=${api_key}`
 
 const make_query = field => text => encodeURIComponent(`${field}: "${text}"`)
 
-// Calls
+// Dashboard
 
-const get_monitor = async (id) => {
-  const monitor_url = `${monitor}/${id}?${credentials}`
-  return request(monitor_url)
-}
+// https://docs.datadoghq.com/api/?lang=python#get-a-dashboard
+const get_dashboard = async id => request(`${dashboard}/${id}?${credentials}`)
+
+// https://docs.datadoghq.com/api/?lang=python#dashboard-lists
+const get_dashboard_list = async id => request(`${dashboard_list}/${id}?${credentials}`)
+
+// Monitors
+
+const get_monitor = async id => request(`${monitor}/${id}?${credentials}`)
 
 const put_monitor = async (id, json) => {
   const url = `${monitor}/${id}?${credentials}`
@@ -40,7 +47,7 @@ const search_monitors_page = async (query, page, per_page) => {
 }
 
 // Response may contain duplicates
-const search_monitors = async (query) => {
+const search_monitors = async query => {
   let page = 0
   const per_page = 100 // Max
   let total_count = 0
@@ -58,6 +65,8 @@ const search_monitors = async (query) => {
 
 module.exports = {
   make_query,
+  get_dashboard,
+  get_dashboard_list,
   get_monitor,
   put_monitor,
   search_monitors
