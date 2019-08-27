@@ -25,7 +25,7 @@ const make_query = field => text => encodeURIComponent(`${field}: "${text}"`)
 const get_dashboard = async id => request(`${dashboard}/${id}?${credentials}`)
 
 // https://docs.datadoghq.com/api/?lang=python#dashboard-lists
-const get_dashboard_list = async id => request(`${dashboard_list}/${id}?${credentials}`)
+const get_dashboard_list = async id => request(`${dashboard_list}/${id}/dashboards?${credentials}`)
 
 // Monitors
 

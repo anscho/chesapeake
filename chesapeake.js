@@ -23,20 +23,21 @@ const command = new NestedCommand({
   description: 'CLI for managing and automating Datadog configuration',
   commands: [
     new NestedCommand({
+      name: 'dashboard',
+      description: 'Command for managing dashboards and dashboard lists',
+      commands: [
+        require('./commands/dashboard/export'),
+        require('./commands/dashboard/get'),
+        require('./commands/dashboard/list')
+      ]
+    }),
+    new NestedCommand({
       name: 'monitor',
       description: 'Command for managing monitors',
       commands: [
         require('./commands/monitor/get'),
         require('./commands/monitor/message'),
         require('./commands/monitor/tag')
-      ]
-    }),
-    new NestedCommand({
-      name: 'dashboard',
-      description: 'Command for managing dashboards and dashboard lists',
-      commands: [
-        require('./commands/dashboard/get'),
-        require('./commands/dashboard/list')
       ]
     })
   ]
