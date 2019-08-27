@@ -2,11 +2,7 @@
 
 'use strict'
 const minimist = require('minimist')
-const cli_utils = require('./cli-utils')
-const datadog = require('./datadog')
-const get_command = require('./commands/get.js')
-const message_command = require('./commands/message.js')
-const tag_command = require('./commands/tag.js')
+const { NestedCommand } = require('@anscho/hive')
 
 // Env
 
@@ -22,13 +18,27 @@ if (missing && missing.length) {
 
 const argv = minimist(process.argv.slice(2))
 
-const command = new cli_utils.NestedCommand({
+const command = new NestedCommand({
   name: 'chesapeake',
   description: 'CLI for managing and automating Datadog configuration',
   commands: [
-    get_command,
-    message_command,
-    tag_command
+    new NestedCommand({
+      name: 'monitor',
+      description: 'Command for managing monitors',
+      commands: [
+        require('./commands/monitor/get'),
+        require('./commands/monitor/message'),
+        require('./commands/monitor/tag')
+      ]
+    }),
+    new NestedCommand({
+      name: 'dashboard',
+      description: 'Command for managing dashboards and dashboard lists',
+      commands: [
+        require('./commands/dashboard/get'),
+        require('./commands/dashboard/list')
+      ]
+    })
   ]
 })
 

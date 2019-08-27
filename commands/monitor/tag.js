@@ -2,10 +2,10 @@
 'use strict'
 const _ = require('lodash')
 const fs = require('fs')
-const { promisify } = require('util')
+const hive = require('@anscho/hive')
 
-const cli_utils = require('../cli-utils')
-const datadog = require('../datadog')
+const cli_utils = require('../../cli-utils')
+const datadog = require('../../datadog')
 
 // Helper
 
@@ -23,7 +23,7 @@ const find_help = () => {
 }
 
 const find_command = async argv => {
-  if (cli_utils.is_help(argv)) {
+  if (hive.isHelp(argv)) {
     find_help()
     process.exit()
   }
@@ -85,7 +85,7 @@ const add_help = () => {
 }
 
 const add_command = async argv => {
-  if (cli_utils.is_help(argv)) {
+  if (hive.isHelp(argv)) {
     add_help()
     process.exit()
   }
@@ -144,7 +144,7 @@ const remove_help = () => {
 }
 
 const remove_command = async argv => {
-  if (cli_utils.is_help(argv)) {
+  if (hive.isHelp(argv)) {
     remove_help()
     process.exit()
   }
@@ -179,7 +179,7 @@ const export_help = () => {
 }
 
 const export_command = async argv => {
-  if (cli_utils.is_help(argv)) {
+  if (hive.isHelp(argv)) {
     export_help()
     process.exit()
   }
@@ -221,7 +221,7 @@ const export_command = async argv => {
 
 // CLI
 
-module.exports = new cli_utils.NestedCommand({
+module.exports = new hive.NestedCommand({
   name: 'tag',
   description: 'Find and update monitor tags.',
   commands: [

@@ -4,6 +4,7 @@
   "description": "CLI for managing and automating Datadog configuration",
   "main": "chesapeake.js",
   "dependencies": {
+    "@anscho/hive": "^1.1.0",
     "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "mit-license": "^1.0.0",
