@@ -12,6 +12,7 @@ const { isVerbose } = utilities
 
 const cli_utils = require('../../cli-utils')
 const datadog = require('../../datadog')
+const format = require('./format')
 
 // Helper
 
@@ -156,10 +157,10 @@ const remove_command = new BasicCommand({
   }
 })
 
-// Export
+// Download
 
-const export_command = new BasicCommand({
-  name: 'export',
+const download_command = new BasicCommand({
+  name: 'download',
   options: '<tag> <output_directory>',
   description: 'Finds all monitors associated with a tag and writes them to disk.',
   run: async argv => {
@@ -182,7 +183,9 @@ const export_command = new BasicCommand({
     }
 
     await Promise.all(ids.map(async id => {
-      const monitor = JSON.parse(await datadog.get_monitor(id))
+      const monitor = format.to_storage(
+        JSON.parse(await datadog.get_monitor(id))
+      )
       fs.writeFileSync(
         `${path}/${monitor.id}.json`,
         JSON.stringify(monitor, null, 2)
@@ -201,7 +204,7 @@ module.exports = new NestedCommand({
   description: 'Find and update monitor tags.',
   commands: [
     add_command,
-    export_command,
+    download_command,
     find_command,
     remove_command
   ]
