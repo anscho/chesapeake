@@ -1,5 +1,5 @@
 // CLI for searching and updating Datadog monitors by message
-'use strict'
+const _ = require('lodash')
 const {
   BasicCommand,
   NestedCommand,
@@ -43,13 +43,14 @@ const find_command = new BasicCommand({
     }
 
     const monitors = await datadog.search_monitors(message_query(text))
-    const output = monitors.map(monitor => ({
-      id: monitor.id,
-      name: monitor.name
-    })).filter((monitor, index, self) => {
-      return self.findIndex(x => x.id === monitor.id) === index
-    })
-    return JSON.stringify(output)
+    const output = _.uniqBy(
+      monitors.map(monitor => ({
+        id: monitor.id,
+        name: monitor.name
+      })),
+      monitor => monitor.id
+    )
+    console.log(JSON.stringify(output))
   }
 })
 

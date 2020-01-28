@@ -1,5 +1,4 @@
 // CLI for finding and updating Datadog monitors by tag
-'use strict'
 const _ = require('lodash')
 const fs = require('fs')
 const {
