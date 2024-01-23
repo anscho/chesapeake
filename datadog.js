@@ -15,34 +15,45 @@ const base = 'https://api.datadoghq.com/api/v1'
 const dashboard = `${base}/dashboard`
 const dashboard_list = `${base}/dashboard/lists/manual`
 const monitor = `${base}/monitor`
-const credentials = `application_key=${app_key}&api_key=${api_key}`
+
+const dd_request = async options => {
+  if (typeof options === 'string') {
+    options = {url: options}
+  }
+  options = {
+    ...options,
+    headers: {
+      'DD-API-KEY': api_key,
+      'DD-APPLICATION-KEY': app_key,
+      Accept: 'application/json'}
+  }
+  return request(options)
+}
 
 const make_query = field => text => encodeURIComponent(`${field}: "${text}"`)
 
 // Dashboard
 
 // https://docs.datadoghq.com/api/?lang=python#get-a-dashboard
-const get_dashboard = async id => request(`${dashboard}/${id}?${credentials}`)
+const get_dashboard = async id => dd_request(`${dashboard}/${id}`)
 
 // https://docs.datadoghq.com/api/?lang=python#dashboard-lists
-const get_dashboard_list = async id => request(`${dashboard_list}/${id}/dashboards?${credentials}`)
+const get_dashboard_list = async id => dd_request(`${dashboard_list}/${id}/dashboards`)
 
 // Monitors
 
-const get_monitor = async id => request(`${monitor}/${id}?${credentials}`)
+const get_monitor = async id => dd_request(`${monitor}/${id}`)
 
 const put_monitor = async (id, json) => {
-  const url = `${monitor}/${id}?${credentials}`
-  return request({
-    url,
+  return dd_request({
+    url: `${monitor}/${id}`,
     method: 'PUT',
     json
   })
 }
 
 const search_monitors_page = async (query, page, per_page) => {
-  const search_url = `${monitor}/search?${credentials}&query=${query}&page=${page}&per_page=${per_page}&sort=name,asc`
-  const response = await request(search_url)
+  const response = await dd_request(`${monitor}/search?&query=${query}&page=${page}&per_page=${per_page}&sort=name,asc`)
   return JSON.parse(response)
 }
 
