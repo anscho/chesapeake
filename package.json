@@ -1,17 +1,16 @@
 {
   "name": "chesapeake",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "CLI for managing and automating Datadog configuration",
   "main": "chesapeake.js",
   "dependencies": {
-    "@anscho/hive": "^1.2.2",
-    "lodash": "^4.17.15",
-    "minimist": "^1.2.0",
+    "@anscho/hive": "^1.3.1",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.8",
     "mit-license": "^1.0.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/anscho/chesapeake"
