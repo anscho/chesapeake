@@ -1,11 +1,12 @@
 // Get a dashboard from the API
-const { BasicCommand } = require('@anscho/hive')
-const datadog = require('../../datadog')
+import { BasicCommand } from '@anscho/hive'
+import datadog from '../../datadog.js'
 
-module.exports = new BasicCommand({
+export default new BasicCommand({
   name: 'get',
   options: '<dashboard ID>',
-  description: 'Get a datadog dashboard by ID. The ID doesn\'t include the human-readable portion.',
+  description:
+    "Get a datadog dashboard by ID. The ID doesn't include the human-readable portion.",
   run: async (argv, help) => {
     const id = argv._[0]
 

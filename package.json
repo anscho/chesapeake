@@ -3,6 +3,7 @@
   "version": "2.1.3",
   "description": "CLI for managing and automating Datadog configuration",
   "main": "chesapeake.js",
+  "type": "module",
   "dependencies": {
     "@anscho/hive": "^1.3.1",
     "lodash": "^4.17.21",

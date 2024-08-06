@@ -1,6 +1,6 @@
 // API wrapper for Datadog
 
-const request = require('request-promise-native')
+import request from 'request-promise-native'
 
 const { DATADOG_API_KEY: api_key, DATADOG_APP_KEY: app_key } = process.env
 
@@ -74,7 +74,7 @@ const search_monitors = async query => {
   return monitors
 }
 
-module.exports = {
+export default {
   make_query,
   get_dashboard,
   get_dashboard_list,

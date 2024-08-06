@@ -1,11 +1,11 @@
 // CLI for searching and updating Datadog monitors by message
-const _ = require('lodash')
-const { BasicCommand, NestedCommand, utilities } = require('@anscho/hive')
+import * as _ from 'lodash'
+import hive from '@anscho/hive'
+import cli_utils from '../../cli-utils.js'
+import datadog from '../../datadog.js'
 
+const { BasicCommand, NestedCommand, utilities } = hive
 const { isVerbose } = utilities
-
-const cli_utils = require('../../cli-utils')
-const datadog = require('../../datadog')
 
 // Execute
 
@@ -99,7 +99,7 @@ Options:
 
 // CLI
 
-module.exports = new NestedCommand({
+export default new NestedCommand({
   name: 'message',
   description: 'Find and update monitor messages.',
   commands: [find_command, replace_command]

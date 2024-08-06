@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 
-const minimist = require('minimist')
-const { NestedCommand } = require('@anscho/hive')
+import minimist from 'minimist'
+import hive from '@anscho/hive'
+import exportDashboard from './commands/dashboard/export.js'
+import getDashboard from './commands/dashboard/get.js'
+import listDashboards from './commands/dashboard/list.js'
+import getMonitor from './commands/monitor/get.js'
+import findMessageInMonitors from './commands/monitor/message.js'
+import findTagInMonitors from './commands/monitor/tag.js'
+
+const { NestedCommand } = hive
 
 // Env
 
@@ -24,20 +32,12 @@ const command = new NestedCommand({
     new NestedCommand({
       name: 'dashboard',
       description: 'Command for managing dashboards and dashboard lists',
-      commands: [
-        require('./commands/dashboard/export'),
-        require('./commands/dashboard/get'),
-        require('./commands/dashboard/list')
-      ]
+      commands: [exportDashboard, getDashboard, listDashboards]
     }),
     new NestedCommand({
       name: 'monitor',
       description: 'Command for managing monitors',
-      commands: [
-        require('./commands/monitor/get'),
-        require('./commands/monitor/message'),
-        require('./commands/monitor/tag')
-      ]
+      commands: [getMonitor, findMessageInMonitors, findTagInMonitors]
     })
   ]
 })

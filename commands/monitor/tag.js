@@ -1,13 +1,13 @@
 // CLI for finding and updating Datadog monitors by tag
-const _ = require('lodash')
-const fs = require('fs')
-const { BasicCommand, NestedCommand, utilities } = require('@anscho/hive')
+import * as _ from 'lodash'
+import fs from 'fs'
+import hive from '@anscho/hive'
+import cli_utils from '../../cli-utils.js'
+import datadog from '../../datadog.js'
+import format from './format.js'
 
+const { BasicCommand, NestedCommand, utilities } = hive
 const { isVerbose } = utilities
-
-const cli_utils = require('../../cli-utils')
-const datadog = require('../../datadog')
-const format = require('./format')
 
 // Helper
 
@@ -218,7 +218,7 @@ const download_command = new BasicCommand({
 
 // CLI
 
-module.exports = new NestedCommand({
+export default new NestedCommand({
   name: 'tag',
   description: 'Find and update monitor tags.',
   commands: [add_command, download_command, find_command, remove_command]

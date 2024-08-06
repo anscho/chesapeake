@@ -1,8 +1,8 @@
 // Returns the contents of a dashboard list
-const { BasicCommand } = require('@anscho/hive')
-const datadog = require('../../datadog')
+import { BasicCommand } from '@anscho/hive'
+import datadog from '../../datadog.js'
 
-module.exports = new BasicCommand({
+export default new BasicCommand({
   name: 'list',
   options: '<dashboard list ID>',
   description: 'Get the dashboards in a dashboard list by ID',

@@ -1,8 +1,10 @@
 // Simplest sub-command, to get a monitor from the API
-const { BasicCommand } = require('@anscho/hive')
-const datadog = require('../../datadog')
+import hive from '@anscho/hive'
+import datadog from '../../datadog.js'
 
-module.exports = new BasicCommand({
+const { BasicCommand } = hive
+
+export default new BasicCommand({
   name: 'get',
   options: '<monitor ID>',
   description: 'Retrieve a datadog monitor by ID.',

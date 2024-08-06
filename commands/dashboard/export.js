@@ -1,11 +1,11 @@
 // Returns the contents of a dashboard list
-const fs = require('fs')
-const { BasicCommand, utilities } = require('@anscho/hive')
-const datadog = require('../../datadog')
+import fs from 'fs'
+import hive from '@anscho/hive'
+import datadog from '../../datadog.js'
 
+const { BasicCommand, utilities } = hive
 const { isVerbose } = utilities
-
-module.exports = new BasicCommand({
+export default new BasicCommand({
   name: 'export',
   options: '<dashboard list ID> <output directory>',
   description: 'Write the dashboards from a dashboard list to disk.',

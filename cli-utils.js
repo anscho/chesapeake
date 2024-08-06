@@ -13,6 +13,6 @@ const parse_comma_separated_list = arg => {
   return arg.split(',')
 }
 
-module.exports = {
+export default {
   parse_comma_separated_list
 }
