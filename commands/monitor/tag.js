@@ -1,11 +1,7 @@
 // CLI for finding and updating Datadog monitors by tag
 const _ = require('lodash')
 const fs = require('fs')
-const {
-  BasicCommand,
-  NestedCommand,
-  utilities
-} = require('@anscho/hive')
+const { BasicCommand, NestedCommand, utilities } = require('@anscho/hive')
 
 const { isVerbose } = utilities
 
@@ -32,10 +28,13 @@ const find_command = new BasicCommand({
     }
 
     const monitors = await datadog.search_monitors(tag_query(tag))
-    const output = _.uniqBy(monitors.map(monitor => ({
-      id: monitor.id,
-      name: monitor.name
-    })), monitor => monitor.id)
+    const output = _.uniqBy(
+      monitors.map(monitor => ({
+        id: monitor.id,
+        name: monitor.name
+      })),
+      monitor => monitor.id
+    )
     console.log(JSON.stringify(output))
   }
 })
@@ -58,17 +57,24 @@ const add_tag = tag => async monitor_id => {
     tags: [...existing_tags, tag]
   })
 
-  const verification_response = JSON.parse(await datadog.get_monitor(monitor_id))
+  const verification_response = JSON.parse(
+    await datadog.get_monitor(monitor_id)
+  )
 
   if (!verification_response.tags.includes(tag)) {
-    throw new Error(`Failed to add ${tag} to ${monitor_id}: ${JSON.stringify(verification_response.tags)}`)
+    throw new Error(
+      `Failed to add ${tag} to ${monitor_id}: ${JSON.stringify(
+        verification_response.tags
+      )}`
+    )
   }
 }
 
 const add_command = new BasicCommand({
   name: 'add',
   options: '<tag> <monitor_ids>',
-  description: 'Add a tag to monitors specified as a list of comma-separated IDs.',
+  description:
+    'Add a tag to monitors specified as a list of comma-separated IDs.',
   run: async (argv, help) => {
     const tag = argv._[0]
     const monitor_ids = cli_utils.parse_comma_separated_list(argv._[1])
@@ -78,20 +84,22 @@ const add_command = new BasicCommand({
       process.exit(1)
     }
 
-    await Promise.all(monitor_ids.map(id =>
-      add_tag(tag)(id)
-        .then(_ => {
-          if (isVerbose(argv)) {
-            console.log(`Added tag ${tag} to ${id}`)
-          }
-        })
-        .catch(error => {
-          if (isVerbose(argv)) {
-            console.error(error)
-          }
-          throw error
-        })
-    ))
+    await Promise.all(
+      monitor_ids.map(id =>
+        add_tag(tag)(id)
+          .then(_ => {
+            if (isVerbose(argv)) {
+              console.log(`Added tag ${tag} to ${id}`)
+            }
+          })
+          .catch(error => {
+            if (isVerbose(argv)) {
+              console.error(error)
+            }
+            throw error
+          })
+      )
+    )
     if (isVerbose(argv)) {
       console.log('Done!')
     }
@@ -116,17 +124,24 @@ const remove_tag = tag => async monitor_id => {
     tags: existing_tags.filter(t => t !== tag)
   })
 
-  const verification_response = JSON.parse(await datadog.get_monitor(monitor_id))
+  const verification_response = JSON.parse(
+    await datadog.get_monitor(monitor_id)
+  )
 
   if (verification_response.tags.includes(tag)) {
-    throw new Error(`Failed to remove ${tag} from ${monitor_id}: ${JSON.stringify(verification_response.tags)}`)
+    throw new Error(
+      `Failed to remove ${tag} from ${monitor_id}: ${JSON.stringify(
+        verification_response.tags
+      )}`
+    )
   }
 }
 
 const remove_command = new BasicCommand({
   name: 'remove',
   options: '<tag> <monitor_ids>',
-  description: 'Remove a tag from monitors specified as a list of comma-separated IDs.',
+  description:
+    'Remove a tag from monitors specified as a list of comma-separated IDs.',
   run: async (argv, help) => {
     const tag = argv._[0]
     const monitor_ids = cli_utils.parse_comma_separated_list(argv._[1])
@@ -136,20 +151,22 @@ const remove_command = new BasicCommand({
       process.exit(1)
     }
 
-    await Promise.all(monitor_ids.map(id =>
-      remove_tag(tag)(id)
-        .then(_ => {
-          if (isVerbose(argv)) {
-            console.log(`Removed tag ${tag} from ${id}`)
-          }
-        })
-        .catch(error => {
-          if (isVerbose(argv)) {
-            console.error(error)
-          }
-          throw error
-        })
-    ))
+    await Promise.all(
+      monitor_ids.map(id =>
+        remove_tag(tag)(id)
+          .then(_ => {
+            if (isVerbose(argv)) {
+              console.log(`Removed tag ${tag} from ${id}`)
+            }
+          })
+          .catch(error => {
+            if (isVerbose(argv)) {
+              console.error(error)
+            }
+            throw error
+          })
+      )
+    )
     if (isVerbose(argv)) {
       console.log('Done!')
     }
@@ -161,7 +178,8 @@ const remove_command = new BasicCommand({
 const download_command = new BasicCommand({
   name: 'download',
   options: '<tag> <output_directory>',
-  description: 'Finds all monitors associated with a tag and writes them to disk.',
+  description:
+    'Finds all monitors associated with a tag and writes them to disk.',
   run: async argv => {
     const tag = argv._[0]
     const path = argv._[1]
@@ -181,15 +199,17 @@ const download_command = new BasicCommand({
       console.error(`Missing ${missing} ids`)
     }
 
-    await Promise.all(ids.map(async id => {
-      const monitor = format.to_storage(
-        JSON.parse(await datadog.get_monitor(id))
-      )
-      fs.writeFileSync(
-        `${path}/${monitor.id}.json`,
-        JSON.stringify(monitor, null, 2)
-      )
-    }))
+    await Promise.all(
+      ids.map(async id => {
+        const monitor = format.to_storage(
+          JSON.parse(await datadog.get_monitor(id))
+        )
+        fs.writeFileSync(
+          `${path}/${monitor.id}.json`,
+          JSON.stringify(monitor, null, 2)
+        )
+      })
+    )
     if (isVerbose(argv)) {
       console.log(`Wrote ${ids.length} monitors to ${path}`)
     }
@@ -201,10 +221,5 @@ const download_command = new BasicCommand({
 module.exports = new NestedCommand({
   name: 'tag',
   description: 'Find and update monitor tags.',
-  commands: [
-    add_command,
-    download_command,
-    find_command,
-    remove_command
-  ]
+  commands: [add_command, download_command, find_command, remove_command]
 })

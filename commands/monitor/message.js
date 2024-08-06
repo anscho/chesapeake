@@ -1,10 +1,6 @@
 // CLI for searching and updating Datadog monitors by message
 const _ = require('lodash')
-const {
-  BasicCommand,
-  NestedCommand,
-  utilities
-} = require('@anscho/hive')
+const { BasicCommand, NestedCommand, utilities } = require('@anscho/hive')
 
 const { isVerbose } = utilities
 
@@ -24,7 +20,9 @@ const update_monitor = async (id, text, replacement_text) => {
 
   const verification_response = JSON.parse(await datadog.get_monitor(id))
   if (!verification_response.message.includes(replacement_text)) {
-    throw new Error(`Monitor ${id} should contain ${replacement_text} after update: ${verification_response.message}`)
+    throw new Error(
+      `Monitor ${id} should contain ${replacement_text} after update: ${verification_response.message}`
+    )
   }
 }
 
@@ -77,20 +75,22 @@ Options:
     const ids = monitor_ids
       ? cli_utils.parse_comma_separated_list(monitor_ids)
       : (await datadog.search_monitors(message_query(text))).map(m => m.id)
-    await Promise.all(ids.map(id =>
-      update_monitor(id, text, replacement_text)
-        .then(_ => {
-          if (isVerbose(argv)) {
-            console.log(`Replaced text on ${id}`)
-          }
-        })
-        .catch(error => {
-          if (isVerbose(argv)){
-            console.error(error)
-          }
-          throw error
-        })
-    ))
+    await Promise.all(
+      ids.map(id =>
+        update_monitor(id, text, replacement_text)
+          .then(_ => {
+            if (isVerbose(argv)) {
+              console.log(`Replaced text on ${id}`)
+            }
+          })
+          .catch(error => {
+            if (isVerbose(argv)) {
+              console.error(error)
+            }
+            throw error
+          })
+      )
+    )
     if (isVerbose(argv)) {
       return 'Done!'
     }
@@ -102,8 +102,5 @@ Options:
 module.exports = new NestedCommand({
   name: 'message',
   description: 'Find and update monitor messages.',
-  commands: [
-    find_command,
-    replace_command
-  ]
+  commands: [find_command, replace_command]
 })

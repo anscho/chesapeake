@@ -1,9 +1,6 @@
 // Returns the contents of a dashboard list
 const fs = require('fs')
-const {
-  BasicCommand,
-  utilities
-} = require('@anscho/hive')
+const { BasicCommand, utilities } = require('@anscho/hive')
 const datadog = require('../../datadog')
 
 const { isVerbose } = utilities
@@ -32,13 +29,15 @@ module.exports = new BasicCommand({
     const list = JSON.parse(await datadog.get_dashboard_list(list_id))
     const ids = list.dashboards.map(entry => entry.new_id)
 
-    await Promise.all(ids.map(async id => {
-      const dashboard = JSON.parse(await datadog.get_dashboard(id))
-      fs.writeFileSync(
-        `${path}/${dashboard.id}.json`,
-        JSON.stringify(dashboard, null, 2)
-      )
-    }))
+    await Promise.all(
+      ids.map(async id => {
+        const dashboard = JSON.parse(await datadog.get_dashboard(id))
+        fs.writeFileSync(
+          `${path}/${dashboard.id}.json`,
+          JSON.stringify(dashboard, null, 2)
+        )
+      })
+    )
     if (isVerbose(argv)) {
       console.log(`Wrote ${ids.length} dashboards to ${path}`)
     }

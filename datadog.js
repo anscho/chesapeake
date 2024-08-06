@@ -2,10 +2,7 @@
 
 const request = require('request-promise-native')
 
-const {
-  DATADOG_API_KEY: api_key,
-  DATADOG_APP_KEY: app_key
-} = process.env
+const { DATADOG_API_KEY: api_key, DATADOG_APP_KEY: app_key } = process.env
 
 // API
 // https://docs.datadoghq.com/api/?lang=bash#monitors-search
@@ -17,14 +14,15 @@ const monitor = `${base}/monitor`
 
 const dd_request = async options => {
   if (typeof options === 'string') {
-    options = {url: options}
+    options = { url: options }
   }
   options = {
     ...options,
     headers: {
       'DD-API-KEY': api_key,
       'DD-APPLICATION-KEY': app_key,
-      Accept: 'application/json'}
+      Accept: 'application/json'
+    }
   }
   return request(options)
 }
@@ -37,7 +35,8 @@ const make_query = field => text => encodeURIComponent(`${field}: "${text}"`)
 const get_dashboard = async id => dd_request(`${dashboard}/${id}`)
 
 // https://docs.datadoghq.com/api/?lang=python#dashboard-lists
-const get_dashboard_list = async id => dd_request(`${dashboard_list}/${id}/dashboards`)
+const get_dashboard_list = async id =>
+  dd_request(`${dashboard_list}/${id}/dashboards`)
 
 // Monitors
 
@@ -52,7 +51,9 @@ const put_monitor = async (id, json) => {
 }
 
 const search_monitors_page = async (query, page, per_page) => {
-  const response = await dd_request(`${monitor}/search?&query=${query}&page=${page}&per_page=${per_page}&sort=name,asc`)
+  const response = await dd_request(
+    `${monitor}/search?&query=${query}&page=${page}&per_page=${per_page}&sort=name,asc`
+  )
   return JSON.parse(response)
 }
 
