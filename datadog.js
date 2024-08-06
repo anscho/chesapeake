@@ -1,6 +1,6 @@
 // API wrapper for Datadog
 
-import request from 'request-promise-native'
+import got from 'got'
 
 const { DATADOG_API_KEY: api_key, DATADOG_APP_KEY: app_key } = process.env
 
@@ -24,7 +24,7 @@ const dd_request = async options => {
       Accept: 'application/json'
     }
   }
-  return request(options)
+  return (await got(options)).body
 }
 
 const make_query = field => text => encodeURIComponent(`${field}: "${text}"`)

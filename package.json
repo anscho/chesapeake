@@ -6,10 +6,9 @@
   "type": "module",
   "dependencies": {
     "@anscho/hive": "^1.3.1",
+    "got": "^14.4.2",
     "lodash": "^4.17.21",
-    "minimist": "^1.2.8",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.9"
+    "minimist": "^1.2.8"
   },
   "repository": {
     "type": "git",

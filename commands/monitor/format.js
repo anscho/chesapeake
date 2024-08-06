@@ -1,6 +1,6 @@
 // Transforms between the web and storage formats
 
-import * as _ from 'lodash'
+import _ from 'lodash'
 
 // These fields create diff noise without offering value
 const to_storage = monitor =>

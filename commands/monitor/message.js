@@ -1,5 +1,5 @@
 // CLI for searching and updating Datadog monitors by message
-import * as _ from 'lodash'
+import _ from 'lodash'
 import hive from '@anscho/hive'
 import cli_utils from '../../cli-utils.js'
 import datadog from '../../datadog.js'

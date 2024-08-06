@@ -1,5 +1,5 @@
 // CLI for finding and updating Datadog monitors by tag
-import * as _ from 'lodash'
+import _ from 'lodash'
 import fs from 'fs'
 import hive from '@anscho/hive'
 import cli_utils from '../../cli-utils.js'
