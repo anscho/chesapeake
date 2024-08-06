@@ -15,7 +15,7 @@
     "url": "https://github.com/anscho/chesapeake"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Andrew Schoenfeld",
   "license": "MIT",
@@ -25,5 +25,9 @@
   ],
   "bin": {
     "chesapeake": "./chesapeake.js"
+  },
+  "devDependencies": {
+    "mocha": "^10.7.0",
+    "sinon": "^18.0.0"
   }
 }

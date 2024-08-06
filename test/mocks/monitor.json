@@ -1,0 +1,42 @@
+{
+  "id": 123,
+  "org_id": 456,
+  "type": "query alert",
+  "name": "High latency",
+  "message": "",
+  "tags": [
+    "team:blue-team",
+    "app:backend"
+  ],
+  "query": "avg(last_5m):avg:backend.latency by {env} > 1000",
+  "options": {
+    "thresholds": {
+      "critical": 1000.0
+    },
+    "notify_audit": false,
+    "require_full_window": false,
+    "notify_no_data": false,
+    "renotify_interval": 0,
+    "timeout_h": 0,
+    "include_tags": true,
+    "no_data_timeframe": null,
+    "escalation_message": "",
+    "new_group_delay": 0,
+    "silenced": {}
+  },
+  "multi": true,
+  "created_at": 1704067200000,
+  "created": "2024-01-01T00:00:00+00:00",
+  "modified": "2024-01-01T00:00:00+00:00",
+  "deleted": null,
+  "restricted_roles": null,
+  "priority": null,
+  "overall_state_modified": "2024-01-01T00:00:00+00:00",
+  "overall_state": "OK",
+  "creator": {
+    "name": "",
+    "email": "",
+    "handle": "",
+    "id": 789
+  }
+}
