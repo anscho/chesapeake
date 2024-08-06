@@ -1,4 +1,3 @@
-'use strict'
 // API wrapper for Datadog
 
 const request = require('request-promise-native')

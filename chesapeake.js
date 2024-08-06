@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-'use strict'
 const minimist = require('minimist')
 const { NestedCommand } = require('@anscho/hive')
 

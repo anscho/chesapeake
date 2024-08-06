@@ -4,10 +4,9 @@ const {
   BasicCommand,
   utilities
 } = require('@anscho/hive')
+const datadog = require('../../datadog')
 
 const { isVerbose } = utilities
-
-const datadog = require('../../datadog')
 
 module.exports = new BasicCommand({
   name: 'export',
