@@ -2,9 +2,9 @@
 import _ from 'lodash'
 import fs from 'fs'
 import hive from '@anscho/hive'
-import cli_utils from '../../cli-utils.js'
-import datadog from '../../datadog.js'
-import format from './format.js'
+import cli_utils from '../cli-utils.js'
+import datadog from '../../controllers/datadog.js'
+import format from '../monitor-format.js'
 
 const { BasicCommand, NestedCommand, utilities } = hive
 const { isVerbose } = utilities

@@ -1,10 +1,11 @@
 // Returns the contents of a dashboard list
 import fs from 'fs'
 import hive from '@anscho/hive'
-import datadog from '../../datadog.js'
+import datadog from '../../controllers/datadog.js'
 
 const { BasicCommand, utilities } = hive
 const { isVerbose } = utilities
+
 export default new BasicCommand({
   name: 'export',
   options: '<dashboard list ID> <output directory>',

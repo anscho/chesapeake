@@ -1,6 +1,6 @@
 // Simplest sub-command, to get a monitor from the API
 import hive from '@anscho/hive'
-import datadog from '../../datadog.js'
+import datadog from '../../controllers/datadog.js'
 
 const { BasicCommand } = hive
 

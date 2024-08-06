@@ -1,8 +1,8 @@
 // CLI for searching and updating Datadog monitors by message
 import _ from 'lodash'
 import hive from '@anscho/hive'
-import cli_utils from '../../cli-utils.js'
-import datadog from '../../datadog.js'
+import cli_utils from '../cli-utils.js'
+import datadog from '../../controllers/datadog.js'
 
 const { BasicCommand, NestedCommand, utilities } = hive
 const { isVerbose } = utilities

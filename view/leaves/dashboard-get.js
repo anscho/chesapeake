@@ -1,6 +1,6 @@
 // Get a dashboard from the API
 import { BasicCommand } from '@anscho/hive'
-import datadog from '../../datadog.js'
+import datadog from '../../controllers/datadog.js'
 
 export default new BasicCommand({
   name: 'get',
